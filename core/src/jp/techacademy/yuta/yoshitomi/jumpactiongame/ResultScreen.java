@@ -37,7 +37,7 @@ public class ResultScreen extends ScreenAdapter {
 
         mScore = score;
 
-        Texture bgTexture = new Texture("resultback.png");
+        Texture bgTexture = new Texture("result.png");
         mBg = new Sprite(new TextureRegion(bgTexture, 0, 0, 540, 810));
         mBg.setSize(GUI_WIDTH, GUI_HEIGHT);
         mBg.setPosition(0, 0);
