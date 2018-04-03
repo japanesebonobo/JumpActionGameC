@@ -1,6 +1,10 @@
 package jp.techacademy.yuta.yoshitomi.jumpactiongame;
 
+import android.content.Context;
 import android.graphics.Color;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -22,8 +26,9 @@ public class AndroidLauncher extends AndroidApplication implements ActivityReque
 	private final int SHOW_ADS = 1;
 	private final int HIDE_ADS = 0;
 
-	protected Handler handler = new Handler()
-	{
+	MediaPlayer mMediaPlayer;
+
+	protected Handler handler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
@@ -38,7 +43,7 @@ public class AndroidLauncher extends AndroidApplication implements ActivityReque
 	};
 
 	@Override
-	protected void onCreate (Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
@@ -52,9 +57,13 @@ public class AndroidLauncher extends AndroidApplication implements ActivityReque
 		AdRequest adRequest = new AdRequest.Builder().build();
 		mAdView.loadAd(adRequest);
 
+		mMediaPlayer = mMediaPlayer.create(this, R.raw.bgm);
+		mMediaPlayer.setLooping(true);
+		mMediaPlayer.start();
+
 		RelativeLayout layout = new RelativeLayout(this);
 		layout.addView(gameView, ViewGroup.LayoutParams.MATCH_PARENT,
-				                 ViewGroup.LayoutParams.MATCH_PARENT);
+				ViewGroup.LayoutParams.MATCH_PARENT);
 
 		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
 				ViewGroup.LayoutParams.MATCH_PARENT,
@@ -72,5 +81,11 @@ public class AndroidLauncher extends AndroidApplication implements ActivityReque
 		} else {
 			handler.sendEmptyMessage(HIDE_ADS);
 		}
+	}
+
+	@Override
+	public void YajyunoHoukou() {
+		mMediaPlayer = MediaPlayer.create(this, R.raw.se);
+		mMediaPlayer.start();
 	}
 }
