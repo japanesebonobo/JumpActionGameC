@@ -22,6 +22,8 @@ import java.util.Random;
 
 import javax.xml.stream.events.StartDocument;
 
+import static com.badlogic.gdx.Input.Keys.R;
+
 /**
  * Created by yoshitomi on 3/29/2018.
  */
@@ -52,6 +54,7 @@ public class GameScreen extends ScreenAdapter {
     Random mRandom;
     List<Step> mSteps;
     List<Star> mStars;
+    List<Enemy> mEnemys;
     Ufo mUfo;
     Player mPlayer;
 
@@ -83,6 +86,7 @@ public class GameScreen extends ScreenAdapter {
         mRandom = new Random();
         mSteps = new ArrayList<Step>();
         mStars = new ArrayList<Star>();
+        mEnemys = new ArrayList<Enemy>();
         mGameState = GAME_STATE_READY;
         mTouchPoint = new Vector3();
         mFont = new BitmapFont(Gdx.files.internal("font.fnt"), Gdx.files.internal("font.png"), false);
@@ -123,6 +127,10 @@ public class GameScreen extends ScreenAdapter {
             mStars.get(i).draw(mGame.batch);
         }
 
+        for (int i = 0; i < mEnemys.size(); i++) {
+            mEnemys.get(i).draw(mGame.batch);
+        }
+
         mUfo.draw(mGame.batch);
 
         mPlayer.draw(mGame.batch);
@@ -148,6 +156,7 @@ public class GameScreen extends ScreenAdapter {
         Texture starTexture = new Texture("star.png" );
         Texture playerTexture = new Texture("uma.png");
         Texture ufoTexture = new Texture("ufo.png");
+        Texture enemyTexture = new Texture("Enemy.jpg");
 
         float y = 0;
 
@@ -164,6 +173,12 @@ public class GameScreen extends ScreenAdapter {
                 Star star = new Star(starTexture, 0, 0, 72, 72);
                 star.setPosition(step.getX() + mRandom.nextFloat(), step.getY() + Star.STAR_HEIGHT + mRandom.nextFloat() * 3);
                 mStars.add(star);
+            }
+
+            if (mRandom.nextFloat() > 0.7f) {
+                Enemy enemy = new Enemy(enemyTexture, 0, 0, 444, 380);
+                enemy.setPosition(step.getX() + mRandom.nextFloat(), step.getY() + Enemy.ENEMY_HEIGHT + mRandom.nextFloat() * 6);
+                mEnemys.add(enemy);
             }
 
             y += (maxJumpHeight - 0.5f);
@@ -255,6 +270,17 @@ public class GameScreen extends ScreenAdapter {
                     mPrefs.flush();
                 }
                 break;
+            }
+        }
+
+        for (int j = 0; j < mEnemys.size(); j++) {
+            Enemy enemy = mEnemys.get(j);
+
+            if (mPlayer.getBoundingRectangle().overlaps(enemy.getBoundingRectangle())) {
+                if (mGame.mRequestHandler != null) {
+                    mGame.mRequestHandler.YajyunoHoukou();
+                }
+                mGameState = GAME_STATE_GAMEOVER;
             }
         }
 
