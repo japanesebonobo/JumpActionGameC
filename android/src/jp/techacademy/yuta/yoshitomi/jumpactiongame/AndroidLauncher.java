@@ -57,10 +57,6 @@ public class AndroidLauncher extends AndroidApplication implements ActivityReque
 		AdRequest adRequest = new AdRequest.Builder().build();
 		mAdView.loadAd(adRequest);
 
-		mMediaPlayer = mMediaPlayer.create(this, R.raw.bgm);
-		mMediaPlayer.setLooping(true);
-		mMediaPlayer.start();
-
 		RelativeLayout layout = new RelativeLayout(this);
 		layout.addView(gameView, ViewGroup.LayoutParams.MATCH_PARENT,
 				ViewGroup.LayoutParams.MATCH_PARENT);
@@ -87,5 +83,22 @@ public class AndroidLauncher extends AndroidApplication implements ActivityReque
 	public void YajyunoHoukou() {
 		mMediaPlayer = MediaPlayer.create(this, R.raw.se);
 		mMediaPlayer.start();
+	}
+
+	public void PlayerDeath() {
+		mMediaPlayer = MediaPlayer.create(this, R.raw.death);
+		mMediaPlayer.start();
+		mMediaPlayer = MediaPlayer.create(this, R.raw.ghorst);
+		mMediaPlayer.start();
+	}
+
+	public void Bgm() {
+		mMediaPlayer = mMediaPlayer.create(this, R.raw.bgm);
+		mMediaPlayer.setLooping(true);
+		mMediaPlayer.start();
+	}
+
+	public void BgmStop() {
+		mMediaPlayer.stop();
 	}
 }
