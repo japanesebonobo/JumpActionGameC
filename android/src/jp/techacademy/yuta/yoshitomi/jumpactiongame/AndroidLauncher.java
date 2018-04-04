@@ -93,12 +93,10 @@ public class AndroidLauncher extends AndroidApplication implements ActivityReque
 	}
 
 	public void Bgm() {
-		mMediaPlayer = mMediaPlayer.create(this, R.raw.bgm);
-		mMediaPlayer.setLooping(true);
-		mMediaPlayer.start();
-	}
-
-	public void BgmStop() {
-		mMediaPlayer.stop();
+		if (mMediaPlayer == null) {
+			mMediaPlayer = mMediaPlayer.create(this, R.raw.bgm);
+			mMediaPlayer.setLooping(true);
+			mMediaPlayer.start();
+		}
 	}
 }
