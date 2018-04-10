@@ -10,4 +10,8 @@ public interface ActivityRequestHandler {
     public void showAds(boolean show);
 
     public void YajyunoHoukou();
+
+    public void PlayerDeath();
+
+    public void Bgm();
 }

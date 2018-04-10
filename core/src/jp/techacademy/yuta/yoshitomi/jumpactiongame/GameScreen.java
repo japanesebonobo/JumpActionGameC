@@ -75,6 +75,8 @@ public class GameScreen extends ScreenAdapter {
         mBg.setSize(CAMERA_WIDTH, CAMERA_HEIGHT);
         mBg.setPosition(0, 0);
 
+        mGame.mRequestHandler.Bgm();
+
         mCamera = new OrthographicCamera();
         mCamera.setToOrtho(false, CAMERA_WIDTH, CAMERA_HEIGHT);
         mViewPort = new FitViewport(CAMERA_WIDTH, CAMERA_HEIGHT, mCamera);
@@ -175,8 +177,9 @@ public class GameScreen extends ScreenAdapter {
                 mStars.add(star);
             }
 
-            if (mRandom.nextFloat() > 0.7f) {
-                Enemy enemy = new Enemy(enemyTexture, 0, 0, 444, 380);
+            if (mRandom.nextFloat() > 0.8f) {
+                int type2 = mRandom.nextFloat() > 0.8f ? Enemy.ENEMY_TYPE_MOVING : Enemy.ENEMY_TYPE_STATIC;
+                Enemy enemy = new Enemy(type2, enemyTexture, 0, 0, 444, 380);
                 enemy.setPosition(step.getX() + mRandom.nextFloat(), step.getY() + Enemy.ENEMY_HEIGHT + mRandom.nextFloat() * 6);
                 mEnemys.add(enemy);
             }
@@ -230,6 +233,10 @@ public class GameScreen extends ScreenAdapter {
             mSteps.get(i).update(delta);
         }
 
+        for (int i = 0; i < mEnemys.size(); i++) {
+            mEnemys.get(i).update2(delta);
+        }
+
         if (mPlayer.getY() <= Player.PLAYER_HEIGHT / 2) {
             mPlayer.hitStep();
         }
@@ -250,6 +257,7 @@ public class GameScreen extends ScreenAdapter {
 
     private void checkCollision() {
         if (mPlayer.getBoundingRectangle().overlaps(mUfo.getBoundingRectangle())) {
+            mGame.mRequestHandler.PlayerDeath();
             mGameState = GAME_STATE_GAMEOVER;
             return;
         }
@@ -310,6 +318,7 @@ public class GameScreen extends ScreenAdapter {
     private void checkGameOver() {
         if (mHeightSoFar - CAMERA_HEIGHT / 2 > mPlayer.getY()) {
             Gdx.app.log("JampActionGame", "GAMEOVER");
+            mGame.mRequestHandler.PlayerDeath();
             mGameState = GAME_STATE_GAMEOVER;
         }
 
